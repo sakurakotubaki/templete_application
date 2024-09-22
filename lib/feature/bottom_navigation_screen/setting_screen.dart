@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:templete_application/feature/state/locale_notifier.dart';
 import 'package:templete_application/feature/widgets/text.dart';
 import 'package:templete_application/gen/assets.gen.dart';
+import 'package:templete_application/gen/strings.g.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = Translations.of(context);
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => ref.read(localeNotifierProvider.notifier).changeLocale(),
+        child: const Icon(Icons.language),
+      ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
@@ -28,10 +37,11 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     AppText.regular(
-                        text: '俺ちゃん',
-                        color: Colors.black,
-                        fontSize: 18,
-                        textAlign: TextAlign.center),
+                      text: '俺ちゃん',
+                      color: Colors.black,
+                      fontSize: 18,
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
@@ -41,32 +51,35 @@ class SettingsScreen extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 SettingsItem(
-                    icon: Icons.privacy_tip, title: 'プライバシーポリシー', onTap: () {}),
+                  icon: Icons.privacy_tip,
+                  title: t.mainScreen.privacy_tip,
+                  onTap: () {},
+                ),
                 SettingsItem(
                   icon: Icons.description,
-                  title: '利用規約',
+                  title: t.mainScreen.description,
                   onTap: () {
                     debugPrint('call');
                   },
                 ),
                 SettingsItem(
                   icon: Icons.person,
-                  title: '個人設定',
+                  title: t.mainScreen.personal,
                   onTap: () {},
                 ),
                 SettingsItem(
                   icon: Icons.language,
-                  title: '対応言語の変更',
+                  title: t.mainScreen.language,
                   onTap: () {},
                 ),
                 SettingsItem(
                   icon: Icons.info,
-                  title: 'アプリのバージョン情報',
+                  title: t.mainScreen.info,
                   onTap: () {},
                 ),
                 SettingsItem(
                   icon: Icons.copyright,
-                  title: 'ライセンス情報',
+                  title: t.mainScreen.copyright,
                   onTap: () {},
                 ),
               ],
@@ -93,11 +106,11 @@ class SettingsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
         leading: Icon(icon),
         title: Text(title),
-        trailing: Icon(Icons.chevron_right),
+        trailing: const Icon(Icons.chevron_right),
         onTap: onTap ??
             () {
               debugPrint('$title がタップされました');

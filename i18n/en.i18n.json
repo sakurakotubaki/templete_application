@@ -1,0 +1,14 @@
+{
+    "mainScreen": {
+      "privacy_tip": "privacy_tip",
+      "description": "description",
+      "personal": "personal",
+      "language": "language",
+      "info": "info",
+      "copyright": "copyright"
+    },
+    "locales(map)": {
+      "en": "English",
+      "ja": "Japanese"
+    }
+  }

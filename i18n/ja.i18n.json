@@ -1,0 +1,14 @@
+{
+    "mainScreen": {
+      "privacy_tip": "プライバシーポリシー",
+      "description": "利用規約",
+      "personal": "個人設定",
+      "language": "対応言語の変更",
+      "info": "アプリのバージョン情報",
+      "copyright": "ライセンス情報"
+    },
+    "locales(map)": {
+      "en": "英語",
+      "ja": "日本語"
+    }
+  }
