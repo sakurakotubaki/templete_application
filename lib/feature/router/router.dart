@@ -3,15 +3,19 @@ import 'package:go_router/go_router.dart';
 import 'package:templete_application/feature/auth/login_screen.dart';
 import 'package:templete_application/feature/home/home_screen.dart';
 import 'package:templete_application/feature/home/setting_screen.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'router.g.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-final GoRouter router = GoRouter(
+@Riverpod(keepAlive: true)
+  GoRouter goRouter(GoRouterRef ref) {
+  return GoRouter(
     routes: $appRoutes,
     initialLocation: '/login',
   );
+}
 
 @TypedGoRoute<LoginRouteData>(path: '/login')
 class LoginRouteData extends GoRouteData {
