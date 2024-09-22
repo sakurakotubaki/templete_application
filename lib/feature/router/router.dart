@@ -1,152 +1,131 @@
-// import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:templete_application/feature/auth/login_screen.dart';
+import 'package:templete_application/feature/home/home_screen.dart';
+import 'package:templete_application/feature/home/setting_screen.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// part 'router.g.dart';
+part 'router.g.dart';
 
-// final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-// @riverpod
-// GoRouter router(RouterRef ref) {
-// return GoRouter(
-//     debugLogDiagnostics: true,
-//     routes: $appRoutes,
-//     initialLocation: '/login',
-//     redirect: (context, state) {
-//       const bool isLoggedIn = false;
-//       if(!isLoggedIn) return const LoginRouteData().location;
-//     },
-//   );
-//  }
+@Riverpod(keepAlive: true)
+class AuthState extends _$AuthState {
+  @override
+  bool build() => true;
 
+  void login() => state = true;
+  void logout() => state = false;
+}
 
-// @TypedGoRoute<LoginRouteData>(path: '/login')
-// class LoginRouteData extends GoRouteData {
-//   const LoginRouteData();
+@Riverpod(keepAlive: true)
+GoRouter goRouter(GoRouterRef ref) {
+  final authState = ref.watch(authStateProvider);
+  
+  return GoRouter(
+    debugLogDiagnostics: true,
+    routes: $appRoutes,
+    initialLocation: '/login',
+    redirect: (context, state) {
+      final isLoggedIn = authState;
+      final isLoggingIn = state.matchedLocation == '/login';
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return const LoginScreen();
-//   }
-// }
+      if (!isLoggedIn && !isLoggingIn) return '/login';
+      if (isLoggedIn && isLoggingIn) return '/home';
 
-// class LoginScreen extends StatelessWidget {
-//   const LoginScreen({super.key});
+      return null;
+    },
+  );
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Login')),
-//       body: Center(
-//         child: ElevatedButton(
-//           child: const Text('Login'),
-//           onPressed: () => context.go('/home'),
-//         ),
-//       ),
-//     );
-//   }
-// }
+@TypedGoRoute<LoginRouteData>(path: '/login')
+class LoginRouteData extends GoRouteData {
+  const LoginRouteData();
 
-// @TypedShellRoute<MyShellRouteData>(
-//   routes: <TypedRoute<RouteData>>[
-//     TypedGoRoute<HomeRouteData>(path: '/home'),
-//     TypedGoRoute<SettingsRouteData>(path: '/settings'),
-//   ],
-// )
-// class MyShellRouteData extends ShellRouteData {
-//   const MyShellRouteData();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LoginScreen();
+  }
+}
 
-//   @override
-//   Widget builder(BuildContext context, GoRouterState state, Widget child) {
-//     return ScaffoldWithNavBar(child: child);
-//   }
+@TypedShellRoute<MyShellRouteData>(
+  routes: <TypedRoute<RouteData>>[
+    TypedGoRoute<HomeRouteData>(path: '/home'),
+    TypedGoRoute<SettingsRouteData>(path: '/settings'),
+  ],
+)
+class MyShellRouteData extends ShellRouteData {
+  const MyShellRouteData();
 
-//   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
-// }
+  @override
+  Widget builder(BuildContext context, GoRouterState state, Widget child) {
+    return ScaffoldWithNavBar(child: child);
+  }
 
-// class HomeRouteData extends GoRouteData {
-//   const HomeRouteData();
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+}
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return const HomeScreen();
-//   }
-// }
+class HomeRouteData extends GoRouteData {
+  const HomeRouteData();
 
-// class SettingsRouteData extends GoRouteData {
-//   const SettingsRouteData();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const HomeScreen();
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return const SettingsScreen();
-//   }
-// }
+class SettingsRouteData extends GoRouteData {
+  const SettingsRouteData();
 
-// class HomeScreen extends StatelessWidget {
-//   const HomeScreen();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SettingsScreen();
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Home')),
-//       body: const Center(child: Text('Home Screen')),
-//     );
-//   }
-// }
+class ScaffoldWithNavBar extends StatelessWidget {
+  const ScaffoldWithNavBar({
+    required this.child,
+    super.key,
+  });
 
-// class SettingsScreen extends StatelessWidget {
-//   const SettingsScreen({super.key});
+  final Widget child;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Settings')),
-//       body: const Center(child: Text('Settings Screen')),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+        currentIndex: _calculateSelectedIndex(context),
+        onTap: (int idx) => _onItemTapped(idx, context),
+      ),
+    );
+  }
 
-// class ScaffoldWithNavBar extends StatelessWidget {
-//   const ScaffoldWithNavBar({
-//     required this.child,
-//     super.key,
-//   });
+  static int _calculateSelectedIndex(BuildContext context) {
+    final String location = GoRouterState.of(context).matchedLocation;
+    if (location.startsWith('/home')) {
+      return 0;
+    }
+    if (location.startsWith('/settings')) {
+      return 1;
+    }
+    return 0;
+  }
 
-//   final Widget child;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: child,
-//       bottomNavigationBar: BottomNavigationBar(
-//         items: const <BottomNavigationBarItem>[
-//           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-//           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-//         ],
-//         currentIndex: _calculateSelectedIndex(context),
-//         onTap: (int idx) => _onItemTapped(idx, context),
-//       ),
-//     );
-//   }
-
-//   static int _calculateSelectedIndex(BuildContext context) {
-//     final String location = GoRouterState.of(context).matchedLocation;
-//     if (location.startsWith('/home')) {
-//       return 0;
-//     }
-//     if (location.startsWith('/settings')) {
-//       return 1;
-//     }
-//     return 0;
-//   }
-
-//   void _onItemTapped(int index, BuildContext context) {
-//     switch (index) {
-//       case 0:
-//         GoRouter.of(context).go('/home');
-//         break;
-//       case 1:
-//         GoRouter.of(context).go('/settings');
-//         break;
-//     }
-//   }
+  void _onItemTapped(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        GoRouter.of(context).go('/home');
+        break;
+      case 1:
+        GoRouter.of(context).go('/settings');
+        break;
+    }
+  }
+}

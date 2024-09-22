@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'main.dart';
+part of 'router.dart';
 
 // **************************************************************************
 // GoRouterGenerator
@@ -88,3 +88,38 @@ extension $SettingsRouteDataExtension on SettingsRouteData {
 
   void replace(BuildContext context) => context.replace(location);
 }
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$goRouterHash() => r'99171ce029b3ffd51a394e58e2dd666a71733516';
+
+/// See also [goRouter].
+@ProviderFor(goRouter)
+final goRouterProvider = Provider<GoRouter>.internal(
+  goRouter,
+  name: r'goRouterProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$goRouterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GoRouterRef = ProviderRef<GoRouter>;
+String _$authStateHash() => r'aea3baf0920bba00c1b0fda421f9df0aa13c96dc';
+
+/// See also [AuthState].
+@ProviderFor(AuthState)
+final authStateProvider = NotifierProvider<AuthState, bool>.internal(
+  AuthState.new,
+  name: r'authStateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AuthState = Notifier<bool>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
