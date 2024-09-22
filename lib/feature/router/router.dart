@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:templete_application/feature/auth/login_screen.dart';
-import 'package:templete_application/feature/home/home_screen.dart';
-import 'package:templete_application/feature/home/setting_screen.dart';
+import 'package:templete_application/feature/bottom_navigation_screen/home_screen.dart';
+import 'package:templete_application/feature/bottom_navigation_screen/setting_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
