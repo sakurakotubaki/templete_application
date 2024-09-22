@@ -93,7 +93,7 @@ extension $SettingsRouteDataExtension on SettingsRouteData {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'fcc75d7c8eda380e41dcb826d30cceb4fbe0899a';
+String _$goRouterHash() => r'99171ce029b3ffd51a394e58e2dd666a71733516';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)
@@ -107,5 +107,19 @@ final goRouterProvider = Provider<GoRouter>.internal(
 );
 
 typedef GoRouterRef = ProviderRef<GoRouter>;
+String _$authStateHash() => r'aea3baf0920bba00c1b0fda421f9df0aa13c96dc';
+
+/// See also [AuthState].
+@ProviderFor(AuthState)
+final authStateProvider = NotifierProvider<AuthState, bool>.internal(
+  AuthState.new,
+  name: r'authStateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AuthState = Notifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

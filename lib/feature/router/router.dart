@@ -4,16 +4,38 @@ import 'package:templete_application/feature/auth/login_screen.dart';
 import 'package:templete_application/feature/home/home_screen.dart';
 import 'package:templete_application/feature/home/setting_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 part 'router.g.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
-  GoRouter goRouter(GoRouterRef ref) {
+class AuthState extends _$AuthState {
+  @override
+  bool build() => true;
+
+  void login() => state = true;
+  void logout() => state = false;
+}
+
+@Riverpod(keepAlive: true)
+GoRouter goRouter(GoRouterRef ref) {
+  final authState = ref.watch(authStateProvider);
+  
   return GoRouter(
+    debugLogDiagnostics: true,
     routes: $appRoutes,
     initialLocation: '/login',
+    redirect: (context, state) {
+      final isLoggedIn = authState;
+      final isLoggingIn = state.matchedLocation == '/login';
+
+      if (!isLoggedIn && !isLoggingIn) return '/login';
+      if (isLoggedIn && isLoggingIn) return '/home';
+
+      return null;
+    },
   );
 }
 
