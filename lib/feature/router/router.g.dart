@@ -107,7 +107,7 @@ final goRouterProvider = Provider<GoRouter>.internal(
 );
 
 typedef GoRouterRef = ProviderRef<GoRouter>;
-String _$authStateHash() => r'3ef0c803cef8d034d7f39bc96a7d693f423024e1';
+String _$authStateHash() => r'aea3baf0920bba00c1b0fda421f9df0aa13c96dc';
 
 /// See also [AuthState].
 @ProviderFor(AuthState)

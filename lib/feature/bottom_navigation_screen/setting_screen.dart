@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:templete_application/feature/widgets/text.dart';
+import 'package:templete_application/gen/assets.gen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -20,19 +22,16 @@ class SettingsScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: Colors.indigo, // アバター画像のパスを指定
+                    Assets.orechen.image(
+                      width: 50,
+                      height: 50,
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'ユーザー名',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    const SizedBox(height: 10),
+                    AppText.regular(
+                        text: '俺ちゃん',
+                        color: Colors.black,
+                        fontSize: 18,
+                        textAlign: TextAlign.center),
                   ],
                 ),
               ),
@@ -41,12 +40,35 @@ class SettingsScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                _buildSettingsItem(Icons.privacy_tip, 'プライバシーポリシー'),
-                _buildSettingsItem(Icons.description, '利用規約'),
-                _buildSettingsItem(Icons.person, '個人設定'),
-                _buildSettingsItem(Icons.language, '対応言語の変更'),
-                _buildSettingsItem(Icons.info, 'アプリのバージョン情報'),
-                _buildSettingsItem(Icons.copyright, 'ライセンス情報'),
+                SettingsItem(
+                    icon: Icons.privacy_tip, title: 'プライバシーポリシー', onTap: () {}),
+                SettingsItem(
+                  icon: Icons.description,
+                  title: '利用規約',
+                  onTap: () {
+                    debugPrint('call');
+                  },
+                ),
+                SettingsItem(
+                  icon: Icons.person,
+                  title: '個人設定',
+                  onTap: () {},
+                ),
+                SettingsItem(
+                  icon: Icons.language,
+                  title: '対応言語の変更',
+                  onTap: () {},
+                ),
+                SettingsItem(
+                  icon: Icons.info,
+                  title: 'アプリのバージョン情報',
+                  onTap: () {},
+                ),
+                SettingsItem(
+                  icon: Icons.copyright,
+                  title: 'ライセンス情報',
+                  onTap: () {},
+                ),
               ],
             ),
           ),
@@ -54,17 +76,32 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-  Widget _buildSettingsItem(IconData icon, String title) {
+}
+
+class SettingsItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback? onTap;
+
+  const SettingsItem({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
         leading: Icon(icon),
         title: Text(title),
         trailing: Icon(Icons.chevron_right),
-        onTap: () {
-          // タップ時の処理を追加
-          debugPrint('settings call');
-        },
+        onTap: onTap ??
+            () {
+              debugPrint('$title がタップされました');
+            },
       ),
     );
   }
